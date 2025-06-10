@@ -2,10 +2,9 @@
 //using Microsoft.EntityFrameworkCore.Design;
 using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
-using VehicleInformationAPI.DataLayer.Repositories;
 //using VehicleInformationAPI.DataLayer;
-//using VehicleInformationAPI.DataLayer.Interfaces;
-//using VehicleInformationAPI.DataLayer.Repositories;
+using VehicleInformationAPI.DataLayer.Interfaces;
+using VehicleInformationAPI.DataLayer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

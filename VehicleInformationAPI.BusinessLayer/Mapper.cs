@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using VehicleInformationAPI.BusinessLayer.BusinessObjects;
-using mainModels = VehicleInformationAPI.Models;
-using dataModels = VehicleInformationAPI.DataLayer.Models;
+using VehicleInformationAPI.Models;
+using VehicleInformationAPI.DataLayer.Models;
 
 namespace VehicleInformationAPI.BusinessLayer
 {
@@ -11,10 +11,10 @@ namespace VehicleInformationAPI.BusinessLayer
         {
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<VehicleInformationBO, mainModels.VehicleInformation>();
-                cfg.CreateMap<VehicleInformationBO, dataModels.VehicleInformation>();
-                cfg.CreateMap<mainModels.VehicleInformation, dataModels.VehicleInformation>();
-                cfg.CreateMap<dataModels.VehicleInformation, mainModels.VehicleInformation>();
+                //cfg.CreateMap<VehicleInformationBO, mainModels.VehicleInformation>();
+                //cfg.CreateMap<VehicleInformationBO, dataModels.VehicleInformation>();
+                cfg.CreateMap<VehicleInformation, VehicleInformationDataObject>().ReverseMap();
+                //cfg.CreateMap<VehicleInformationDataObject, VehicleInformation>();
             });
         }
     }

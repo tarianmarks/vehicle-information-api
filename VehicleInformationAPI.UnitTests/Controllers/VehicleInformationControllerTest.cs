@@ -4,6 +4,7 @@ using Moq;
 using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
 using VehicleInformationAPI.Controllers;
+using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.UnitTests.Controllers
 {
@@ -13,7 +14,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         private Mock<IVehicleInformationService> _mockBL;
         private VehicleInformationController _controller;
 
-        private Models.VehicleInformation _mockVehicleInformation = new Models.VehicleInformation()
+        private VehicleInformation _mockVehicleInformation = new VehicleInformation()
         {
             DealerId = 12345,
             VIN = "14LAKDF2Q3231",
