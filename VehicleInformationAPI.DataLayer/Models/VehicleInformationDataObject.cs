@@ -1,6 +1,6 @@
 ﻿namespace VehicleInformationAPI.DataLayer.Models
 {
-    public class VehicleInformation
+    public class VehicleInformationDataObject
     {
         public int DealerId { get; set; }
         public string? VIN { get; set; }

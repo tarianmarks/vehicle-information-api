@@ -1,21 +1,23 @@
 ﻿using VehicleInformationAPI.DataLayer.Models;
+using VehicleInformationAPI.Models;
+using VehicleInformationAPI.DataLayer.Interfaces;
 
 namespace VehicleInformationAPI.DataLayer.Repositories
 {
     public class VehicleInformationRepository : IVehicleInformationRepository
     {
-        public async Task<DataLayer.Models.VehicleInformation> GetVehicleInformationByVIN(string vin)
+        public async Task<VehicleInformation> GetVehicleInformationByVIN(string vin)
         {
-            return new DataLayer.Models.VehicleInformation()
+            return new VehicleInformation()
             {
                 DealerId = 12345,
                 VIN = "14LAKDF2Q3231",
                 ModifiedDate = DateTime.Now
             };
         }
-        public async Task<List<DataLayer.Models.VehicleInformation>> GetAllVehicles()
+        public async Task<List<VehicleInformation>> GetAllVehicles()
         {
-            return new List<DataLayer.Models.VehicleInformation>()
+            return new List<VehicleInformation>()
             {
                 new VehicleInformation()
                 {

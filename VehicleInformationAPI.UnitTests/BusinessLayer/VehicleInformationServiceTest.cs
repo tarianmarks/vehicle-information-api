@@ -5,7 +5,8 @@ using Moq;
 using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.BusinessObjects;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
-using VehicleInformationAPI.DataLayer.Repositories;
+using VehicleInformationAPI.DataLayer.Models;
+using VehicleInformationAPI.DataLayer.Interfaces;
 using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.UnitTests.Controllers
@@ -17,15 +18,15 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         private Mock<IVehicleInformationRepository> _mockRepository;
         private VehicleInformationService _service;
 
-        private Models.VehicleInformation _mockVehicleInformation = new Models.VehicleInformation()
+        private VehicleInformation _mockVehicleInformation = new VehicleInformation()
         {
             DealerId = 12345,
             VIN = "14LAKDF2Q3231",
             ModifiedDate = DateTime.Now
         };
         
-        private List<DataLayer.Models.VehicleInformation> _mockRepositoryVehicleInformation = new List<DataLayer.Models.VehicleInformation>(){
-            new DataLayer.Models.VehicleInformation()
+        private List<VehicleInformationDataObject> _mockRepositoryVehicleInformation = new List<VehicleInformationDataObject>(){
+            new VehicleInformationDataObject()
             {
                 DealerId = 12345,
                 VIN = "14LAKDF2Q3231",
@@ -38,8 +39,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             _mockRepository = new Mock<IVehicleInformationRepository>();
             var config = new MapperConfiguration(cfg =>
             {               
-                cfg.CreateMap<Models.VehicleInformation, DataLayer.Models.VehicleInformation>();
-                cfg.CreateMap<DataLayer.Models.VehicleInformation, Models.VehicleInformation>();
+                cfg.CreateMap<VehicleInformation, VehicleInformationDataObject>();
+                cfg.CreateMap<VehicleInformationDataObject, VehicleInformation>();
             });
             _mockMapper = config.CreateMapper();
             _service = new VehicleInformationService(_mockRepository.Object, _mockMapper!, _mockBlLogger.Object);
