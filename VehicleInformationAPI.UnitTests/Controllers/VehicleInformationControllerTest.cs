@@ -9,9 +9,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
 {
     public class VehicleInformationControllerTest
     {
-        private readonly Mock<ILogger<VehicleInformation>> _mockBlLogger;
         private Mock<ILogger<VehicleInformationController>> _mockLogger;
-        private Mock<IVehicleInformation> _mockBL;
+        private Mock<IVehicleInformationService> _mockBL;
         private VehicleInformationController _controller;
 
         private Models.VehicleInformation _mockVehicleInformation = new Models.VehicleInformation()
@@ -22,9 +21,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         };
     
         public VehicleInformationControllerTest() {
-            _mockBlLogger = new Mock<ILogger<VehicleInformation>>();
             _mockLogger = new Mock<ILogger<VehicleInformationController>>();
-            _mockBL = new Mock<IVehicleInformation>(/*_mockBlLogger*/);
+            _mockBL = new Mock<IVehicleInformationService>();
             _controller = new VehicleInformationController(_mockBL.Object, _mockLogger.Object);
         }
 
@@ -46,7 +44,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetVehicleInformationByVIN_Should_Return_400_OnFail()
         {
             //Act
-            var result = await _controller.GetVehicleInformationByVIN(String.Empty);
+            var result = await _controller.GetVehicleInformationByVIN(string.Empty);
             var resultType = result as BadRequestResult;
 
             //Assert

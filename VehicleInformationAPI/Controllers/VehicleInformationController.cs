@@ -8,10 +8,10 @@ namespace VehicleInformationAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleInformationController(IVehicleInformation vehicleInformation, ILogger<VehicleInformationController> logger) : ControllerBase
+    public class VehicleInformationController(IVehicleInformationService vehicleInformationService, ILogger<VehicleInformationController> logger) : ControllerBase
     {
         private readonly ILogger<VehicleInformationController>? _logger = logger;
-        private readonly IVehicleInformation? _vehicleInformation = vehicleInformation;
+        private readonly IVehicleInformationService? _vehicleInformationService = vehicleInformationService;
 
         //// GET: api/<vehicle-information>
         //[HttpGet]
@@ -49,10 +49,17 @@ namespace VehicleInformationAPI.Controllers
                 //throw new ArgumentNullException(nameof(vin));
                 return BadRequest();
             }
-            await _vehicleInformation!.GetVehicleInformationByVIN(vin);
+            await _vehicleInformationService!.GetVehicleInformationByVIN(vin);
 
             return Ok();
             //return await _vehicleInformation.GetVehicleInformationByVIN(vin);
+        }
+
+        [HttpPost("")]
+        public async Task<IActionResult> GetListOfVehicleInformation(PaginationFilterRequest request)
+        {
+            await _vehicleInformationService.GetListOfVehicleInformation(request);
+            return Ok();
         }
     }
 }
