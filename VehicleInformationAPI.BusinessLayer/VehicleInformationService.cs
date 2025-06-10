@@ -42,51 +42,52 @@ namespace VehicleInformationAPI.BusinessLayer
         ///</summary>
         ///
         public async Task<List<VehicleInformation>> GetListOfVehicleInformation(PaginationFilterRequest request)
-        {
-            if ((request.PageNumber != null && request.PageSize == null)
-                || (request.PageNumber == null && request.PageSize != null)
-                || (request.PageNumber == 0 && request.PageSize != null)
-                || (request.PageNumber == 0 && request.PageSize == 0)
-                || (request.PageNumber == 0 && request.PageSize == 0)
-                || (request.PageNumber == null && request.PageSize == 0)
-                || (request.PageNumber != null && request.PageSize == 0)
-                || (request.PageNumber == 0 && request.PageSize == null))
-            {
-                throw new Exception("Both page number and page size must be set in order to use pagination");
-            }
-            else 
-            {
-                var resultList = new List<VehicleInformation>();
+        {   
+            var resultList = new List<VehicleInformation>();
                 
-                var result = await _vehicleInformationRepository.GetAllVehicles();
+            var result = await _vehicleInformationRepository.GetAllVehicles();
 
-                if (result.Count > 0) {
-                    if (request.DealerId != null)
+            if (result.Count > 0) {                    
+            //Pagination
+                if (request.PageSize > 0 && request.PageNumber > 0)
+                {
+                    if(request.PageNumber == 1)
                     {
-                        resultList = (List<VehicleInformation>)result.Where(y => y.DealerId == request.DealerId);
+                        resultList = result.Take(request.PageSize).ToList();
                     }
 
-                    if (request.ModifiedDate != null)
+                    else
                     {
-                        resultList = (List<VehicleInformation>)result.Where(y => y.ModifiedDate == request.ModifiedDate);
+                        resultList = result.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();
                     }
-
-                    if (request.PageSize > 0)
-                    {
-                        var pageSize = resultList.Count % request.PageSize;
-                        if (pageSize > 0)
-                        {
-                            resultList.Take(resultList.Count / request.PageSize + 1).ToList();
-                        }
-                    }
-
-                    if (request.PageNumber > 0)
-                    {
-                        resultList.Skip(request.PageNumber).ToList();
-                    }
+                } 
+                
+                else if (request.PageSize == 0 || request.PageNumber == 0)
+                {
+                    // no page size or page number specified, so just return all of the results
+                    resultList = result;
                 }
-                return resultList;
+
+                else if (request.PageSize < 0 || request.PageNumber < 0)
+                {
+                    throw new Exception("Page Size and page numbers must not be negative");
+                }
+
+            // Filtering
+                if (request.DealerId > 0)
+                {
+                    var dealers = resultList.Where(x=> x.DealerId == request.DealerId).ToList();
+                    resultList = dealers;
+                }
+
+                if (!string.IsNullOrEmpty(request.ModifiedDate.ToString()))
+                {
+                    //var values = result.Where(x => x.ModifiedDate >= request.ModifiedDate).ToList();
+                    var values = resultList.Where(x => x.ModifiedDate >= request.ModifiedDate).ToList();
+                    resultList = values;
+                }
             }
+            return resultList;
         }
     }
 }

@@ -31,6 +31,62 @@ namespace VehicleInformationAPI.DataLayer.Repositories
                     DealerId = 12345,
                     VIN = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 12345,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 222341,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 22243,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 98765,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 98765,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 556678,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 6789,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
+                },
+
+                new VehicleInformation()
+                {
+                    DealerId = 6789,
+                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    ModifiedDate = DateTime.Now
                 }
             };
         }
