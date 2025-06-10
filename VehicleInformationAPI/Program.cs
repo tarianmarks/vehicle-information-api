@@ -1,5 +1,6 @@
 //using Microsoft.EntityFrameworkCore;
 //using Microsoft.EntityFrameworkCore.Design;
+using AutoMapper;
 using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
 //using VehicleInformationAPI.DataLayer;
@@ -14,7 +15,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(VehicleInformationService));
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IVehicleInformationService, VehicleInformationService>();
 builder.Services.AddScoped<IVehicleInformationRepository, VehicleInformationRepository>();
 //builder.Services.AddScoped<IClient, Client>();

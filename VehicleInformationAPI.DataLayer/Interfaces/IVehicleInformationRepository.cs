@@ -1,10 +1,11 @@
 ﻿using VehicleInformationAPI.DataLayer.Models;
+using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.DataLayer.Interfaces
 {
     public interface IVehicleInformationRepository
     {
-        public Task<List<VehicleInformationDataObject>> GetAllVehicles();
-        public Task<VehicleInformationDataObject> GetVehicleInformationByVIN(string vin);
+        public Task<List<VehicleInformation>> GetAllVehicles();
+        public Task<VehicleInformation> GetVehicleInformationByVIN(string vin);
     }
 }

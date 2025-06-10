@@ -13,8 +13,13 @@ namespace VehicleInformationAPI.BusinessLayer
             {
                 //cfg.CreateMap<VehicleInformationBO, mainModels.VehicleInformation>();
                 //cfg.CreateMap<VehicleInformationBO, dataModels.VehicleInformation>();
-                cfg.CreateMap<VehicleInformation, VehicleInformationDataObject>().ReverseMap();
-                //cfg.CreateMap<VehicleInformationDataObject, VehicleInformation>();
+                cfg.CreateMap<VehicleInformation, VehicleInformationDataObject>();
+                cfg.CreateMap<VehicleInformationDataObject, VehicleInformation>();
+
+                //cfg.AddMaps(new[]
+                //{
+                //    typeof(VehicleInformationService),
+                //});
             });
         }
     }

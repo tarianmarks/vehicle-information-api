@@ -32,7 +32,8 @@ namespace VehicleInformationAPI.BusinessLayer
         /// <returns>The vehicle information found with the VIN</returns>
         public async Task<VehicleInformation> GetVehicleInformationByVIN(string vin)
         {
-            return _mapper.Map<VehicleInformation>(await _vehicleInformationRepository.GetVehicleInformationByVIN(vin));
+            return await _vehicleInformationRepository.GetVehicleInformationByVIN(vin);
+            //return _mapper.Map<VehicleInformation>(await _vehicleInformationRepository.GetVehicleInformationByVIN(vin));
         }
 
         ///<summary>

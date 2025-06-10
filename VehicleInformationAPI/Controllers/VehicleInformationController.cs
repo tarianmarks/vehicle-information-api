@@ -49,17 +49,17 @@ namespace VehicleInformationAPI.Controllers
                 //throw new ArgumentNullException(nameof(vin));
                 return BadRequest();
             }
-            await _vehicleInformationService!.GetVehicleInformationByVIN(vin);
+            var result = await _vehicleInformationService!.GetVehicleInformationByVIN(vin);
 
-            return Ok();
+            return Ok(result);
             //return await _vehicleInformation.GetVehicleInformationByVIN(vin);
         }
 
         [HttpPost("")]
         public async Task<IActionResult> GetListOfVehicleInformation(PaginationFilterRequest request)
         {
-            await _vehicleInformationService.GetListOfVehicleInformation(request);
-            return Ok();
+            var result = await _vehicleInformationService.GetListOfVehicleInformation(request);
+            return Ok(result);
         }
     }
 }
