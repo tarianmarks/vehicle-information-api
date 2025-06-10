@@ -2,10 +2,11 @@
 
 namespace VehicleInformationAPI.BusinessLayer.Interfaces
 {
-    public interface IVehicleInformation
+    public interface IVehicleInformationService
     {
         public Task<Models.VehicleInformation> StoreVehicleInDataStore(VehicleInformation vehicle);
 
         public Task<Models.VehicleInformation> GetVehicleInformationByVIN(string vin);
+        public Task<List<Models.VehicleInformation>> GetListOfVehicleInformation(PaginationFilterRequest request);
     }
 }

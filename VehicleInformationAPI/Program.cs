@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IVehicleInformation, VehicleInformation>();
+builder.Services.AddScoped<IVehicleInformationService, VehicleInformationService>();
 //builder.Services.AddScoped<IClient, Client>();
 //builder.Services.AddScoped<IAttorneyRepository, AttorneyRepository>();
 //builder.Services.AddScoped<DbContext, DataContext>();
