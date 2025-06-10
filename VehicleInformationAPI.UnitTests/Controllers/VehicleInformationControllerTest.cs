@@ -34,7 +34,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
 
             //Act
             var result = await _controller.GetVehicleInformationByVIN(_mockVehicleInformation.VIN!);
-            var resultType = result as OkResult;
+            var resultType = result as OkObjectResult;
 
             //Assert
             Assert.NotNull(result);

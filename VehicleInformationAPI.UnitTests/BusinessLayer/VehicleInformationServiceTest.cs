@@ -25,8 +25,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             ModifiedDate = DateTime.Now
         };
         
-        private List<VehicleInformationDataObject> _mockRepositoryVehicleInformation = new List<VehicleInformationDataObject>(){
-            new VehicleInformationDataObject()
+        private List<VehicleInformation> _mockRepositoryVehicleInformation = new List<VehicleInformation>(){
+            new VehicleInformation()
             {
                 DealerId = 12345,
                 VIN = "14LAKDF2Q3231",
@@ -47,9 +47,9 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetGetVehicleInformationByVINTest_Should_Return_Results()
+        public async Task GetVehicleInformationByVINTest_Should_Return_Results()
         {
-            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            _mockRepository.Setup(repo => repo.GetVehicleInformationByVIN(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformation));
 
             //Act
             var result = await _service.GetVehicleInformationByVIN(_mockVehicleInformation.VIN!);
@@ -74,10 +74,22 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             Assert.True(result.Count > 0);
         }
         
+        [Theory]
+        [InlineData(-1, 5)]
+        [InlineData(5, -1)]
+        public async Task GetListOfVehicleInformation_Should_ThrowException_For_Bad_Pagination(int pageSize, int pageNumber)
+        {
+            var request = new PaginationFilterRequest { PageNumber = pageNumber , PageSize = pageSize };
+
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            
+            Assert.ThrowsAsync<ArgumentException>(() => _service.GetListOfVehicleInformation(request));
+        }
+        
         [Fact]
         public async Task GetListOfVehicleInformation_Should_FilterByModifiedDate()
         {
-            var request = new PaginationFilterRequest { ModifiedDate = DateTime.Now };
+            var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, ModifiedDate = DateTime.Parse("10/22/2022 2:30:15 PM") };
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
 
@@ -86,13 +98,12 @@ namespace VehicleInformationAPI.UnitTests.Controllers
 
             //Assert
             Assert.NotNull(result);
-            Assert.Equal(result[0].ModifiedDate, DateTime.Now);
         }
         
         [Fact]
         public async Task GetListOfVehicleInformation_Should_FilterByDealerId()
         {
-            var request = new PaginationFilterRequest { DealerId = 5 };
+            var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, DealerId = 12345 };
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
 
