@@ -7,18 +7,19 @@ namespace VehicleInformationAPI.BusinessLayer
     {
         private readonly ILogger<IVehicleInformation> _logger = logger;
 
-        public VehicleInformation? GetVehicleInformation(string vin)
-        {
-            return null;
-        }
+        //public VehicleInformation? GetVehicleInformation(string vin)
+        //{
+        //    return null;
+        //}
 
         /// <summary>
         /// Stores vehicle information into data store
         /// </summary>
         /// <returns></returns>
-        public async Task<VehicleInformation> StoreVehicleInDataStore(VehicleInformation vehicle)
+        public async Task<Models.VehicleInformation> StoreVehicleInDataStore(VehicleInformation vehicle)
         {
             throw new NotImplementedException();
+            //return _mapper.Map<Models.Client>(await _clientRepository.GetClient(id));
         }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace VehicleInformationAPI.BusinessLayer
         public async Task<Models.VehicleInformation> GetVehicleInformationByVIN(string vin)
         {
             throw new NotImplementedException();
+            //return _mapper.Map<Models.VehicleInformation>(await _vehicleRepository.GetVehicleInformationByVIN(vin));
         }
     }
 }
