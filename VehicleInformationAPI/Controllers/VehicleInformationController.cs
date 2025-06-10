@@ -49,7 +49,7 @@ namespace VehicleInformationAPI.Controllers
                 //throw new ArgumentNullException(nameof(vin));
                 return BadRequest();
             }
-            await _vehicleInformation.GetVehicleInformationByVIN(vin);
+            await _vehicleInformation!.GetVehicleInformationByVIN(vin);
 
             return Ok();
             //return await _vehicleInformation.GetVehicleInformationByVIN(vin);
