@@ -90,5 +90,13 @@ namespace VehicleInformationAPI.DataLayer.Repositories
                 }
             };
         }
+
+        public void StoreVehicleInformation(List<VehicleInformation> vehicleInformation)
+        {
+            //connect to data store
+            
+            //save
+            throw new NotImplementedException();
+        }
     }
 }
