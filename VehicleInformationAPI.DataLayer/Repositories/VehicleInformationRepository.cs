@@ -29,8 +29,8 @@ namespace VehicleInformationAPI.DataLayer.Repositories
                 new VehicleInformation()
                 {
                     DealerId = 12345,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
-                    ModifiedDate = DateTime.Now
+                    VIN = "1G1ZT53826F109149",
+                    ModifiedDate = DateTime.Parse("2022-11-23")
                 },
 
                 new VehicleInformation()

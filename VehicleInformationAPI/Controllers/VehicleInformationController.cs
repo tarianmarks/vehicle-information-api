@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CsvHelper;
+using Microsoft.AspNetCore.Mvc;
+using System.Formats.Asn1;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
 using VehicleInformationAPI.Models;
 
@@ -60,6 +62,22 @@ namespace VehicleInformationAPI.Controllers
         {
             var result = await _vehicleInformationService.GetListOfVehicleInformation(request);
             return Ok(result);
+        }
+
+        [HttpGet("/batch/vin/")]
+        public async Task<IActionResult> GetExtendedVehicleInformation()
+        {
+            var vehicles = await _vehicleInformationService.GetExtendedVehicleInformation();
+
+            return Ok(vehicles);
+        }
+
+        [HttpPost("vehicleinformation/population/{csvFile}")]
+        public async Task<IActionResult> PopulateVehicleInformation(string csvFile)
+        {
+            var completed = _vehicleInformationService.PopulateVehicleInformation(csvFile);
+
+            return Ok();
         }
     }
 }
