@@ -20,6 +20,7 @@ builder.Services.AddAutoMapper(typeof(VehicleInformationService));
 builder.Services.AddScoped<IVehicleInformationService, VehicleInformationService>();
 builder.Services.AddScoped<IVehicleInformationRepository, VehicleInformationRepository>();
 builder.Services.AddScoped<IReadFromCsv, ReadFromCsv>();
+builder.Services.AddHttpClient();
 //builder.Services.AddScoped<IClient, Client>();
 //builder.Services.AddScoped<DbContext, DataContext>();
 //builder.Services.AddDbContext<DataContext>(/*options =>
