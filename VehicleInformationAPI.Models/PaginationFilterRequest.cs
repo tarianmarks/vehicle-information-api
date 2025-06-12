@@ -4,7 +4,7 @@
     {
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
-        public int DealerId { get; set; }
+        public string DealerId { get; set; }
         public DateTime ModifiedDate { get; set; }
     }
 }

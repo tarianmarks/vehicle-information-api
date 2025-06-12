@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
@@ -8,14 +7,14 @@ using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.BusinessLayer
 {
-    public class VehicleInformationService(IVehicleInformationRepository vehicleInformationRepository, IMapper mapper,
+    public class VehicleInformationService(IVehicleInformationRepository vehicleInformationRepository, IMyMapper myMapper,
         IReadFromCsv csvReader, ILogger<IVehicleInformationService> logger, HttpClient httpClient) : IVehicleInformationService
     {
         private readonly IVehicleInformationRepository _vehicleInformationRepository = vehicleInformationRepository;
-        private readonly IMapper _mapper = mapper;
         private readonly IReadFromCsv _csvReader = csvReader;
         private readonly HttpClient _httpClient = httpClient;
         private readonly ILogger<IVehicleInformationService> _logger = logger;
+        private readonly IMyMapper _myMapper = myMapper;
 
         //public VehicleInformation? GetVehicleInformation(string vin)
         //{
@@ -29,17 +28,15 @@ namespace VehicleInformationAPI.BusinessLayer
         public async Task<VehicleInformation> StoreVehicleInDataStore(VehicleInformation vehicle)
         {
             throw new NotImplementedException();
-            //return _mapper.Map<Models.Client>(await _clientRepository.GetClient(id));
         }
 
         /// <summary>
         /// Stores vehicle information into data store
         /// </summary>
         /// <returns>The vehicle information found with the VIN</returns>
-        public async Task<VehicleInformation> GetVehicleInformationByVIN(string vin)
+        public async Task<VehicleInformation> GetVehicleInformationByVin(string vin)
         {
-            return await _vehicleInformationRepository.GetVehicleInformationByVIN(vin);
-            //return _mapper.Map<VehicleInformation>(await _vehicleInformationRepository.GetVehicleInformationByVIN(vin));
+            return _myMapper.MapVehicle(await _vehicleInformationRepository.GetVehicleInformationByVin(vin));
         }
 
         ///<summary>
@@ -50,28 +47,30 @@ namespace VehicleInformationAPI.BusinessLayer
         public async Task<List<VehicleInformation>> GetListOfVehicleInformation(PaginationFilterRequest request)
         {   
             var resultList = new List<VehicleInformation>();
-                
             var result = await _vehicleInformationRepository.GetAllVehicles();
 
-            if (result.Count > 0) {                    
-            //Pagination
+            var mapped = _myMapper.MapVehicles(result);
+
+            if (mapped.Count > 0)
+            {
+                //Pagination
                 if (request.PageSize > 0 && request.PageNumber > 0)
                 {
-                    if(request.PageNumber == 1)
+                    if (request.PageNumber == 1)
                     {
-                        resultList = result.Take(request.PageSize).ToList();
+                        resultList = mapped.Take(request.PageSize).ToList();
                     }
 
                     else
                     {
-                        resultList = result.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();
+                        resultList = mapped.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();
                     }
-                } 
-                
+                }
+
                 else if (request.PageSize == 0 || request.PageNumber == 0)
                 {
                     // no page size or page number specified, so just return all of the results
-                    resultList = result;
+                    resultList = mapped;
                 }
 
                 else if (request.PageSize < 0 || request.PageNumber < 0)
@@ -79,10 +78,10 @@ namespace VehicleInformationAPI.BusinessLayer
                     throw new Exception("Page Size and page numbers must not be negative");
                 }
 
-            // Filtering
-                if (request.DealerId > 0)
+                // Filtering
+                if (!string.IsNullOrEmpty(request.DealerId))
                 {
-                    var dealers = resultList.Where(x=> x.DealerId == request.DealerId).ToList();
+                    var dealers = resultList.Where(x => x.DealerId == request.DealerId).ToList();
                     resultList = dealers;
                 }
 
@@ -95,12 +94,12 @@ namespace VehicleInformationAPI.BusinessLayer
             }
             return resultList;
         }
-    
-        public async Task<NhtsaResults> GetExtendedVehicleInformation()
+
+        public async Task<List<NhtsaResults>> GetExtendedVehicleInformation()
         {
             var results = _vehicleInformationRepository.GetAllVehicles().Result;
 
-            var vins = string.Join(";", results.Select(x => x.VIN!).Distinct());
+            var vins = string.Join(";", results.Select(x => x.Vin!).Distinct());
 
             string url = @"https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/";
             var nameValues = new Dictionary<string, string>();
@@ -120,7 +119,7 @@ namespace VehicleInformationAPI.BusinessLayer
 
                 if (tmp.IsSuccessStatusCode)
                 {
-                    var result = await tmp.Content.ReadFromJsonAsync<NhtsaResults>();
+                    var result = await tmp.Content.ReadFromJsonAsync<List<NhtsaResults>>();
 
                     return result!;
                 }
@@ -128,7 +127,7 @@ namespace VehicleInformationAPI.BusinessLayer
                 else
                 {
                     _logger.LogError("Can't retrieve information from NHTSA");
-                    return new NhtsaResults();
+                    return new List<NhtsaResults>();
                 }
             }
             catch (Exception err)

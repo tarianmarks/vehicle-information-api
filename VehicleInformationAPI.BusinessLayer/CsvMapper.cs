@@ -8,7 +8,7 @@ namespace VehicleInformationAPI.BusinessLayer
         public CsvMapper()
         {
             Map(m => m.DealerId).Name("dealerId");
-            Map(m => m.VIN).Name("vin");
+            Map(m => m.Vin).Name("vin");
             Map(m => m.ModifiedDate).Name("modifiedDate");
         }
      

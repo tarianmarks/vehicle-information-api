@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using VehicleInformationAPI.BusinessLayer;
-using VehicleInformationAPI.BusinessLayer.BusinessObjects;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
-using VehicleInformationAPI.DataLayer.Models;
 using VehicleInformationAPI.DataLayer.Interfaces;
 using VehicleInformationAPI.Models;
 
@@ -14,22 +10,53 @@ namespace VehicleInformationAPI.UnitTests.Controllers
     public class VehicleInformationServiceTest
     {
         private readonly Mock<ILogger<VehicleInformationService>> _mockBlLogger;
-        private readonly IMapper _mockMapper;
+        private readonly Mock<IMyMapper> _mockMyMapper;
         private Mock<IVehicleInformationRepository> _mockRepository;
         private VehicleInformationService _service;
+        private readonly Mock<IReadFromCsv> _mockCsvReader;
+        private readonly Mock<HttpClient> _mockHttpClient;
 
-        private VehicleInformation _mockVehicleInformation = new VehicleInformation()
+        private Models.VehicleInformation _mockVehicleInformation = new Models.VehicleInformation()
         {
-            DealerId = 12345,
-            VIN = "14LAKDF2Q3231",
+            DealerId = "12345",
+            Vin = "14LAKDF2Q3231",
             ModifiedDate = DateTime.Now
         };
         
-        private List<VehicleInformation> _mockRepositoryVehicleInformation = new List<VehicleInformation>(){
-            new VehicleInformation()
+        private DataLayer.Models.VehicleInformation _mockRepositoryVehicleInformation = 
+            new DataLayer.Models.VehicleInformation()
             {
-                DealerId = 12345,
-                VIN = "14LAKDF2Q3231",
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231",
+                ModifiedDate = DateTime.Now
+            };
+        
+        private List<DataLayer.Models.VehicleInformation> _mockRepositoryVehicles = new List<DataLayer.Models.VehicleInformation>(){
+            new DataLayer.Models.VehicleInformation()
+            {
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231",
+                ModifiedDate = DateTime.Now
+            },
+            new DataLayer.Models.VehicleInformation()
+            {
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231OIEWRA",
+                ModifiedDate = DateTime.Now
+            }
+        };
+        
+        private List<Models.VehicleInformation> _mockVehicles = new List<Models.VehicleInformation>(){
+            new Models.VehicleInformation()
+            {
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231",
+                ModifiedDate = DateTime.Now
+            },
+            new Models.VehicleInformation()
+            {
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231OIEWRA",
                 ModifiedDate = DateTime.Now
             }
         };
@@ -37,34 +64,34 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public VehicleInformationServiceTest() {
             _mockBlLogger = new Mock<ILogger<VehicleInformationService>>();
             _mockRepository = new Mock<IVehicleInformationRepository>();
-            var config = new MapperConfiguration(cfg =>
-            {               
-                cfg.CreateMap<VehicleInformation, VehicleInformationDataObject>();
-                cfg.CreateMap<VehicleInformationDataObject, VehicleInformation>();
-            });
-            _mockMapper = config.CreateMapper();
-            _service = new VehicleInformationService(_mockRepository.Object, _mockMapper!, _mockBlLogger.Object);
+            _mockCsvReader = new Mock<IReadFromCsv>();
+            _mockHttpClient = new Mock<HttpClient>();
+            _mockMyMapper = new Mock<IMyMapper>();
+
+            _service = new VehicleInformationService(_mockRepository.Object, _mockMyMapper.Object, _mockCsvReader.Object, _mockBlLogger.Object, _mockHttpClient.Object);            
         }
 
         [Fact]
-        public async Task GetVehicleInformationByVINTest_Should_Return_Results()
+        public async Task GetVehicleInformationByVinTest_Should_Return_Results()
         {
-            _mockRepository.Setup(repo => repo.GetVehicleInformationByVIN(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformation));
+            _mockMyMapper.Setup(x => x.MapVehicle(It.IsAny<DataLayer.Models.VehicleInformation>())).Returns(_mockVehicleInformation);
+            _mockRepository.Setup(repo => repo.GetVehicleInformationByVin(It.IsAny<string>())).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
 
             //Act
-            var result = await _service.GetVehicleInformationByVIN(_mockVehicleInformation.VIN!);
+            var result = await _service.GetVehicleInformationByVin(_mockVehicleInformation.Vin!);
 
             //Assert
             Assert.NotNull(result);
-            Assert.Equal(result.VIN, _mockVehicleInformation.VIN);
+            Assert.Equal(result.Vin, _mockVehicleInformation.Vin);
         }
 
         [Fact]
         public async Task GetListOfVehicleInformation_Should_Paginate()
         {
             var request = new PaginationFilterRequest { PageNumber = 1 , PageSize = 5 };
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
 
-            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
             //Act
             var result = await _service.GetListOfVehicleInformation(request);
@@ -81,7 +108,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         {
             var request = new PaginationFilterRequest { PageNumber = pageNumber , PageSize = pageSize };
 
-            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
             
             Assert.ThrowsAsync<ArgumentException>(() => _service.GetListOfVehicleInformation(request));
         }
@@ -90,8 +117,9 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetListOfVehicleInformation_Should_FilterByModifiedDate()
         {
             var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, ModifiedDate = DateTime.Parse("10/22/2022 2:30:15 PM") };
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
 
-            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
             //Act
             var result = await _service.GetListOfVehicleInformation(request);
@@ -103,9 +131,10 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         [Fact]
         public async Task GetListOfVehicleInformation_Should_FilterByDealerId()
         {
-            var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, DealerId = 12345 };
+            var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, DealerId = "12345" };
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
 
-            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
             //Act
             var result = await _service.GetListOfVehicleInformation(request);
