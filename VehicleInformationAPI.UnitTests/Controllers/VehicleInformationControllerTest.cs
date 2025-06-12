@@ -16,8 +16,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
 
         private VehicleInformation _mockVehicleInformation = new VehicleInformation()
         {
-            DealerId = 12345,
-            VIN = "14LAKDF2Q3231",
+            DealerId = "12345",
+            Vin = "14LAKDF2Q3231",
             ModifiedDate = DateTime.Now
         };
     
@@ -30,10 +30,10 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         [Fact]
         public async Task GetGetVehicleInformationByVINTest_Should_Return_200()
         {
-            _mockBL.Setup(bl => bl.GetVehicleInformationByVIN(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformation));
+            _mockBL.Setup(bl => bl.GetVehicleInformationByVin(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformation));
 
             //Act
-            var result = await _controller.GetVehicleInformationByVIN(_mockVehicleInformation.VIN!);
+            var result = await _controller.GetVehicleInformationByVin(_mockVehicleInformation.Vin!);
             var resultType = result as OkObjectResult;
 
             //Assert
@@ -45,7 +45,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetVehicleInformationByVIN_Should_Return_400_OnFail()
         {
             //Act
-            var result = await _controller.GetVehicleInformationByVIN(string.Empty);
+            var result = await _controller.GetVehicleInformationByVin(string.Empty);
             var resultType = result as BadRequestResult;
 
             //Assert

@@ -22,6 +22,11 @@ namespace VehicleInformationAPI.BusinessLayer
             //builder.Services.AddScoped<IVehicleInformationRepository, VehicleInformationRepository>();
             //builder.Services.AddDbContext<DataContext>(/*options =>options.UseSqlServer(connectionString)*/);
             //builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("OpeningStatementDatabase")));
+
+            //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //var app = builder.Build();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -19,8 +19,7 @@ namespace VehicleInformationAPI.BusinessLayer
         {
             //CreateHostBuilder(args).Build().Run();
             var builder = WebApplication.CreateBuilder(args);
-            //builder.Services.AddScoped<IAttorneyRepository, AttorneyRepository>();
-            //builder.Services.AddDbContext<DataContext>(/*options =>options.UseSqlServer(connectionString)*/);
+            //builder.Services.AddDbContext<DataContext>(/*options => options.UseSqlServer(connectionString)*/);
             //builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("OpeningStatementDatabase")));
         }
 

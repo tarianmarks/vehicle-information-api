@@ -44,14 +44,14 @@ namespace VehicleInformationAPI.Controllers
         // GET api/<vehicle-information>/<vin>/string
         [HttpGet("/vin/{vin}")]
         //public async Task<VehicleInformationAPI.Models.VehicleInformation> GetVehicleInformationByVIN(string vin)
-        public async Task<IActionResult> GetVehicleInformationByVIN(string vin)
+        public async Task<IActionResult> GetVehicleInformationByVin(string vin)
         {
             if (string.IsNullOrWhiteSpace(vin))
             {
                 //throw new ArgumentNullException(nameof(vin));
                 return BadRequest();
             }
-            var result = await _vehicleInformationService!.GetVehicleInformationByVIN(vin);
+            var result = await _vehicleInformationService!.GetVehicleInformationByVin(vin);
 
             return Ok(result);
             //return await _vehicleInformation.GetVehicleInformationByVIN(vin);

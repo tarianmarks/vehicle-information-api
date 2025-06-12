@@ -2,8 +2,8 @@
 {
     public class VehicleInformation
     {
-        public int DealerId { get; set; }
-        public string? VIN { get; set; }
+        public string DealerId { get; set; } = string.Empty;
+        public string? Vin { get; set; }
         public DateTime? ModifiedDate { get; set; }
     }
 }

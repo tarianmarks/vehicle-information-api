@@ -9,10 +9,10 @@ using VehicleInformationAPI.DataLayer.Interfaces;
 
 namespace VehicleInformationAPI.BusinessLayer
 {
-    public class ReadFromCsv(IVehicleInformationRepository vehicleInformationRepository, IMapper mapper, ILogger<IVehicleInformationService> logger) : IReadFromCsv
+    public class ReadFromCsv(IVehicleInformationRepository vehicleInformationRepository, IMyMapper myMapper, ILogger<IVehicleInformationService> logger) : IReadFromCsv
     {
         private readonly IVehicleInformationRepository _vehicleInformationRepository = vehicleInformationRepository;
-        private readonly IMapper _mapper = mapper;
+        private readonly IMyMapper _myMapper = myMapper;
         private readonly ILogger<IVehicleInformationService> _logger = logger;
 
         //public VehicleInformationBO ReadFile(string csvFile)
@@ -30,7 +30,7 @@ namespace VehicleInformationAPI.BusinessLayer
                 //map values
 
                 //store each vehicle in the queryable data store.
-                _vehicleInformationRepository.StoreVehicleInformation(records);
+                //_vehicleInformationRepository.StoreVehicleInformation(_mapper.Map<List<VehicleInformation>>(records));
 
                 //the CSV file should be archived in a backing file store
 

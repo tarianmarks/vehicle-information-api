@@ -1,102 +1,127 @@
 ﻿using VehicleInformationAPI.DataLayer.Models;
-using VehicleInformationAPI.Models;
 using VehicleInformationAPI.DataLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace VehicleInformationAPI.DataLayer.Repositories
 {
-    public class VehicleInformationRepository : IVehicleInformationRepository
+    public class VehicleInformationRepository(DataContext dataContext, IConfiguration configuration) : IVehicleInformationRepository
     {
-        public async Task<VehicleInformation> GetVehicleInformationByVIN(string vin)
+        private DataContext _dataContext = dataContext;
+        private IConfiguration _configuration = configuration;
+
+        public async Task<VehicleInformation> GetVehicleInformationByVin(string vin)
         {
+            using (var context = _dataContext)
+            {
+                var vehicle = _dataContext.VehicleInformations
+                    .Where(b => b.Vin == vin).SingleOrDefault();
+            
             return new VehicleInformation()
             {
-                DealerId = 12345,
-                VIN = "14LAKDF2Q3231",
-                ModifiedDate = DateTime.Now
+                DealerId = !string.IsNullOrEmpty(vehicle?.DealerId) ? vehicle.DealerId : string.Empty,
+                Vin = !string.IsNullOrEmpty(vehicle?.Vin) ? vehicle.Vin : string.Empty,
+                ModifiedDate = !string.IsNullOrEmpty(vehicle?.ModifiedDate.ToString()) ? vehicle.ModifiedDate : DateTime.Now,
             };
+            }
         }
         public async Task<List<VehicleInformation>> GetAllVehicles()
         {
-            return new List<VehicleInformation>()
+            using (var context = _dataContext)
+            {
+                //var user = db.Users
+                //return await _dataContext.VehicleInformations
+                //    .ToListAsync();
+                return new List<VehicleInformation>()
             {
                 new VehicleInformation()
                 {
-                    DealerId = 12345,
-                    VIN = "14LAKDF2Q3231",
+                    DealerId = "12345",
+                    Vin = "14LAKDF2Q3231",
                     ModifiedDate = DateTime.Now
                 },
-                
+
                 new VehicleInformation()
                 {
-                    DealerId = 12345,
-                    VIN = "1G1ZT53826F109149",
+                    DealerId = "12345",
+                    Vin = "1G1ZT53826F109149",
                     ModifiedDate = DateTime.Parse("2022-11-23")
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 12345,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "12345",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 222341,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "222341",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 22243,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "22243",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 98765,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "98765",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 98765,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "98765",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 556678,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "556678",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 6789,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "6789",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 },
 
                 new VehicleInformation()
                 {
-                    DealerId = 6789,
-                    VIN = "14LAKDF2Q3231ERMEW325A",
+                    DealerId = "6789",
+                    Vin = "14LAKDF2Q3231ERMEW325A",
                     ModifiedDate = DateTime.Now
                 }
             };
+            }
+
+            
         }
 
-        public void StoreVehicleInformation(List<VehicleInformation> vehicleInformation)
+        public async Task<bool> StoreVehicleInformation(List<VehicleInformation> vehicleInformation)
         {
-            //connect to data store
-            
-            //save
-            throw new NotImplementedException();
+            using (var context = _dataContext)
+            {
+                //foreach (var v in vehicleInformation)
+                //{
+                //    _dataContext.VehicleInformations.Add(v!);
+                //}
+
+                await _dataContext.SaveChangesAsync();
+
+                return true;
+            }
         }
     }
 }
