@@ -12,9 +12,9 @@ namespace VehicleInformationAPI.Controllers
         private readonly ILogger<VehicleInformationController>? _logger = logger;
 
         [HttpGet("/readFile/{csvFile}")]
-        public IEnumerable<VehicleInformation> Get(string csvFile)
+        public async Task<IEnumerable<VehicleInformation>> Get(string csvFile)
         {
-            return _csvReader.ReadFile(csvFile);
+            return await _csvReader.ReadFile(csvFile);
         }
     }
 }

@@ -11,6 +11,6 @@ namespace VehicleInformationAPI.BusinessLayer
             Map(m => m.Vin).Name("vin");
             Map(m => m.ModifiedDate).Name("modifiedDate");
         }
-     
+
     }
 }

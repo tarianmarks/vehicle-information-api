@@ -4,8 +4,9 @@
     {
         //TDestination Map<TSource, TDestination>(TSource source);
         //List<TDestination> MapList<TSource, TDestination>(List<TSource> source);
-        
+
         Models.VehicleInformation MapVehicle(DataLayer.Models.VehicleInformation vehicle);
         List<Models.VehicleInformation> MapVehicles(List<DataLayer.Models.VehicleInformation> vehicles);
+        List<DataLayer.Models.VehicleInformation> MapVehiclesToDb(List<Models.VehicleInformation> vehicles);
     }
 }

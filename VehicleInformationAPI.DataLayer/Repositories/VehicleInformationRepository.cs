@@ -16,13 +16,13 @@ namespace VehicleInformationAPI.DataLayer.Repositories
             {
                 var vehicle = _dataContext.VehicleInformations
                     .Where(b => b.Vin == vin).SingleOrDefault();
-            
-            return new VehicleInformation()
-            {
-                DealerId = !string.IsNullOrEmpty(vehicle?.DealerId) ? vehicle.DealerId : string.Empty,
-                Vin = !string.IsNullOrEmpty(vehicle?.Vin) ? vehicle.Vin : string.Empty,
-                ModifiedDate = !string.IsNullOrEmpty(vehicle?.ModifiedDate.ToString()) ? vehicle.ModifiedDate : DateTime.Now,
-            };
+
+                return new VehicleInformation()
+                {
+                    DealerId = !string.IsNullOrEmpty(vehicle?.DealerId) ? vehicle.DealerId : string.Empty,
+                    Vin = !string.IsNullOrEmpty(vehicle?.Vin) ? vehicle.Vin : string.Empty,
+                    ModifiedDate = !string.IsNullOrEmpty(vehicle?.ModifiedDate.ToString()) ? vehicle.ModifiedDate : DateTime.Now,
+                };
             }
         }
         public async Task<List<VehicleInformation>> GetAllVehicles()
@@ -106,17 +106,17 @@ namespace VehicleInformationAPI.DataLayer.Repositories
             };
             }
 
-            
+
         }
 
         public async Task<bool> StoreVehicleInformation(List<VehicleInformation> vehicleInformation)
         {
             using (var context = _dataContext)
             {
-                //foreach (var v in vehicleInformation)
-                //{
-                //    _dataContext.VehicleInformations.Add(v!);
-                //}
+                foreach (var v in vehicleInformation)
+                {
+                    _dataContext.VehicleInformations.Add(v!);
+                }
 
                 await _dataContext.SaveChangesAsync();
 
