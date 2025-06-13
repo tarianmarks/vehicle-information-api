@@ -6,6 +6,7 @@ using VehicleInformationAPI.DataLayer;
 using VehicleInformationAPI.DataLayer.Interfaces;
 using VehicleInformationAPI.DataLayer.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IVehicleInformationService, VehicleInformationService
 builder.Services.AddScoped<IVehicleInformationRepository, VehicleInformationRepository>();
 builder.Services.AddScoped<IReadFromCsv, ReadFromCsv>();
 builder.Services.AddScoped<IMyMapper, MyMapper>();
+builder.Services.AddScoped<ISaveToFileStorage, SaveToFileStorage>();
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("VehicleInformationDb")));
 

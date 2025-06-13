@@ -10,33 +10,10 @@ using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.BusinessLayer
 {
-    //public class Mapper : Profile
-    //{
-    //    public Mapper()
-    //    {
-    //        //var configuration = new MapperConfiguration(cfg =>
-    //        //{
-    //        //    //cfg.CreateMap<VehicleInformationBO, mainModels.VehicleInformation>();
-    //        //    //cfg.CreateMap<VehicleInformationBO, dataModels.VehicleInformation>();
-    //        //    cfg.CreateMap<dataModels.VehicleInformation, mainModels.VehicleInformation>().ReverseMap();
-
-    //        //    //cfg.AddMaps(new[]
-    //        //    //{
-    //        //    //    typeof(VehicleInformationService),
-    //        //    //});
-
-    //        //    //cfg.AddProfile<Mapper>();
-    //        //    //cfg.AddMaps(typeof(VehicleInformationService));
-    //        //});
-
-    //        CreateMap<dataModels.VehicleInformation, mainModels.VehicleInformation>().ReverseMap();
-    //    }
-    //}
-
     public class MyMapper : IMyMapper
     {
         public MyMapper() { }
-        
+
         public Models.VehicleInformation MapVehicle(DataLayer.Models.VehicleInformation vehicle)
         {
             return new Models.VehicleInformation()
@@ -57,6 +34,21 @@ namespace VehicleInformationAPI.BusinessLayer
                 {
                     DealerId = vehicle.DealerId,
                     Vin = vehicle.Vin,
+                    ModifiedDate = vehicle.ModifiedDate
+                });
+            }
+            return mappedVehicles;
+        }
+        public List<DataLayer.Models.VehicleInformation> MapVehiclesToDb(List<Models.VehicleInformation> vehicles)
+        {
+            var mappedVehicles = new List<DataLayer.Models.VehicleInformation>();
+
+            foreach (var vehicle in vehicles)
+            {
+                mappedVehicles.Add(new DataLayer.Models.VehicleInformation()
+                {
+                    DealerId = vehicle.DealerId,
+                    Vin = vehicle.Vin!,
                     ModifiedDate = vehicle.ModifiedDate
                 });
             }

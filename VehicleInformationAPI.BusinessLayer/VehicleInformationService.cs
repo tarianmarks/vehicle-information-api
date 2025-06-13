@@ -45,7 +45,7 @@ namespace VehicleInformationAPI.BusinessLayer
         ///</summary>
         ///
         public async Task<List<VehicleInformation>> GetListOfVehicleInformation(PaginationFilterRequest request)
-        {   
+        {
             var resultList = new List<VehicleInformation>();
             var result = await _vehicleInformationRepository.GetAllVehicles();
 
@@ -105,9 +105,9 @@ namespace VehicleInformationAPI.BusinessLayer
             var nameValues = new Dictionary<string, string>();
             nameValues.Add("data", vins);
             nameValues.Add("format", "json");
-            
+
             _httpClient.BaseAddress = new Uri(url);
-            
+
             // using FormUrlEncodedContent
             var name = new FormUrlEncodedContent(nameValues);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
