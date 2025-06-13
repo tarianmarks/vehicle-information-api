@@ -95,8 +95,9 @@ namespace VehicleInformationAPI.BusinessLayer
             return resultList;
         }
 
-        public async Task<List<NhtsaResults>> GetExtendedVehicleInformation()
+        public async Task<List<VehicleInformationExtended>> GetExtendedVehicleInformation()
         {
+            //get data from the database
             var results = _vehicleInformationRepository.GetAllVehicles().Result;
 
             var vins = string.Join(";", results.Select(x => x.Vin!).Distinct());
@@ -111,7 +112,7 @@ namespace VehicleInformationAPI.BusinessLayer
             // using FormUrlEncodedContent
             var name = new FormUrlEncodedContent(nameValues);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            CancellationToken token = new CancellationToken();
+            var token = new CancellationToken();
 
             try
             {
@@ -119,15 +120,32 @@ namespace VehicleInformationAPI.BusinessLayer
 
                 if (tmp.IsSuccessStatusCode)
                 {
-                    var result = await tmp.Content.ReadFromJsonAsync<List<NhtsaResults>>();
+                    var result = await tmp.Content.ReadFromJsonAsync<NhtsaResults>();
+                    var vehicleExt = result!.Results;
 
-                    return result!;
+                    foreach(var res in results)
+                    {
+                        if (vehicleExt!.Count > 0)
+                        {
+                            foreach(var vex in vehicleExt)
+                            {
+                                if(vex.Vin == res.Vin)
+                                {
+                                    vex.ModifiedDate = res.ModifiedDate;
+                                    vex.DealerId = res.DealerId;
+                                }
+                            }
+                        }
+                        
+                    }
+
+                    return vehicleExt!;
                 }
 
                 else
                 {
                     _logger.LogError("Can't retrieve information from NHTSA");
-                    return new List<NhtsaResults>();
+                    return new List<VehicleInformationExtended>();
                 }
             }
             catch (Exception err)
