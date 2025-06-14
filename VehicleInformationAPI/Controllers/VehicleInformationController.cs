@@ -11,24 +11,11 @@ namespace VehicleInformationAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    //[Authorize]
     public class VehicleInformationController(IVehicleInformationService vehicleInformationService, ILogger<VehicleInformationController> logger) : ControllerBase
     {
         private readonly ILogger<VehicleInformationController>? _logger = logger;
         private readonly IVehicleInformationService? _vehicleInformationService = vehicleInformationService;
-
-
-        /// <summary>
-        /// Gets a bearer token to provide access
-        /// </summary>
-        /// <param></param>
-        /// <returns>Bearer token as a string</returns>
-        [HttpGet("authentication/{clientSec}")]
-        public async Task<string> GetAuthentication(string clientSec)
-        {
-            var result = await _vehicleInformationService!.GetAuthentication(clientSec);
-
-            return result;
-        }
 
         /// <summary>
         /// Gets a vehicle and its details by passing in the Vehicle Information Number
@@ -36,7 +23,6 @@ namespace VehicleInformationAPI.Controllers
         /// <param name="vin"></param>
         /// <returns>IActionResult with the vehicle information</returns>
         [HttpGet("vin/{vin}")]
-        [Authorize]
         public async Task<IActionResult> GetVehicleInformationByVin(string vin)
         {
             if (string.IsNullOrWhiteSpace(vin))
@@ -56,7 +42,6 @@ namespace VehicleInformationAPI.Controllers
         /// <param name="request"></param>
         /// <returns>IActionResult with the list of vehicles and details</returns>
         [HttpPost("")]
-        [Authorize]
         public async Task<IActionResult> GetListOfVehicleInformation(PaginationFilterRequest request)
         {
             var result = await _vehicleInformationService.GetListOfVehicleInformation(request);
@@ -70,7 +55,6 @@ namespace VehicleInformationAPI.Controllers
         /// <returns>IActionResult with the list of vehicles and details from NHTSA, concatenated with records from db.</returns>
 
         [HttpGet("nhtsa/batch/vin/")]
-        [Authorize]
         public async Task<IActionResult> GetExtendedVehicleInformation()
         {
             var vehicles = await _vehicleInformationService.GetExtendedVehicleInformation();
@@ -85,7 +69,6 @@ namespace VehicleInformationAPI.Controllers
         /// <param name="csvFile"></param>
         /// <returns>IActionResult status</returns>
         [HttpPost("population/{csvFile}")]
-        [Authorize]
         public async Task<IActionResult> PopulateVehicleInformation(string csvFile)
         {
             var completed = await _vehicleInformationService.PopulateVehicleInformation(csvFile);
