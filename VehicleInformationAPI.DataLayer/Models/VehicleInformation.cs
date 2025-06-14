@@ -5,18 +5,18 @@ namespace VehicleInformationAPI.DataLayer.Models
     [Table("vehicle_information")]
     public class VehicleInformation
     {
-        public int Id { get; set; } // Id (Primary key)
+        public int id { get; set; }
         [Column("dealer_Id")]
-        public string DealerId { get; set; } // dealer_Id
+        public string? dealer_Id { get; set; }
         [Column("vin")]
-        public string Vin { get; set; } // vin
+        public string vin { get; set; } = string.Empty;
         [Column("modified_date")]
-        public DateTime? ModifiedDate { get; set; } // modified_date
+        public DateTime? modified_date { get; set; }
         [Column("make")]
-        public string Make { get; set; } // make (length: 50)
+        public string? make { get; set; }
         [Column("model")]
-        public string Model { get; set; } // model (length: 50)
+        public string? model { get; set; }
         [Column("year")]
-        public string Year { get; set; } // year (length: 50)
+        public string? year { get; set; }
     }
 }

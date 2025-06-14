@@ -18,9 +18,9 @@ namespace VehicleInformationAPI.BusinessLayer
         {
             return new Models.VehicleInformation()
             {
-                DealerId = vehicle.DealerId,
-                Vin = vehicle.Vin,
-                ModifiedDate = vehicle.ModifiedDate
+                DealerId = vehicle.dealer_Id,
+                Vin = vehicle.vin,
+                ModifiedDate = vehicle.modified_date
             };
         }
 
@@ -32,9 +32,9 @@ namespace VehicleInformationAPI.BusinessLayer
             {
                 mappedVehicles.Add(new Models.VehicleInformation()
                 {
-                    DealerId = vehicle.DealerId,
-                    Vin = vehicle.Vin,
-                    ModifiedDate = vehicle.ModifiedDate
+                    DealerId = vehicle.dealer_Id,
+                    Vin = vehicle.vin,
+                    ModifiedDate = vehicle.modified_date
                 });
             }
             return mappedVehicles;
@@ -47,9 +47,9 @@ namespace VehicleInformationAPI.BusinessLayer
             {
                 mappedVehicles.Add(new DataLayer.Models.VehicleInformation()
                 {
-                    DealerId = vehicle.DealerId,
-                    Vin = vehicle.Vin!,
-                    ModifiedDate = vehicle.ModifiedDate
+                    dealer_Id = vehicle.DealerId,
+                    vin = vehicle.Vin!,
+                    modified_date = vehicle.ModifiedDate
                 });
             }
             return mappedVehicles;

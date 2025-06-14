@@ -14,13 +14,13 @@ namespace VehicleInformationAPI.DataLayer.Repositories
             using (var context = _dataContext)
             {
                 var vehicle = await _dataContext.VehicleInformations
-                    .Where(b => b.Vin == vin).SingleOrDefaultAsync();
+                    .Where(b => b.vin == vin).SingleOrDefaultAsync();
 
                 return new VehicleInformation()
                 {
-                    DealerId = !string.IsNullOrEmpty(vehicle?.DealerId) ? vehicle.DealerId : string.Empty,
-                    Vin = !string.IsNullOrEmpty(vehicle?.Vin) ? vehicle.Vin : string.Empty,
-                    ModifiedDate = !string.IsNullOrEmpty(vehicle?.ModifiedDate.ToString()) ? vehicle.ModifiedDate : DateTime.Now,
+                    dealer_Id = !string.IsNullOrEmpty(vehicle?.dealer_Id) ? vehicle.dealer_Id : string.Empty,
+                    vin = !string.IsNullOrEmpty(vehicle?.vin) ? vehicle.vin : string.Empty,
+                    modified_date = !string.IsNullOrEmpty(vehicle?.modified_date.ToString()) ? vehicle.modified_date : DateTime.Now,
                 };
             }
         }
