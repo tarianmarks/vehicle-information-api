@@ -53,8 +53,8 @@ namespace VehicleInformationAPI.BusinessLayer
             }
             catch (Exception err)
             {
-                _logger.LogError($"\"Can't retrieve bearer token {err}");
-                throw new Exception($"\"Can't retrieve bearer token {err}");
+                _logger.LogError($"Can't retrieve bearer token {err}");
+                throw new Exception($"Can't retrieve bearer token {err}");
             }
         }
     }

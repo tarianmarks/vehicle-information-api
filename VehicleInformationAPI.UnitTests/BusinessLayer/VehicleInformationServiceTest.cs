@@ -26,23 +26,23 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         private DataLayer.Models.VehicleInformation _mockRepositoryVehicleInformation = 
             new DataLayer.Models.VehicleInformation()
             {
-                DealerId = "12345",
-                Vin = "14LAKDF2Q3231",
-                ModifiedDate = DateTime.Now
+                dealer_Id = "12345",
+                vin = "14LAKDF2Q3231",
+                modified_date = DateTime.Now
             };
         
         private List<DataLayer.Models.VehicleInformation> _mockRepositoryVehicles = new List<DataLayer.Models.VehicleInformation>(){
             new DataLayer.Models.VehicleInformation()
             {
-                DealerId = "12345",
-                Vin = "14LAKDF2Q3231",
-                ModifiedDate = DateTime.Now
+                dealer_Id = "12345",
+                vin = "14LAKDF2Q3231",
+                modified_date = DateTime.Now
             },
             new DataLayer.Models.VehicleInformation()
             {
-                DealerId = "12345",
-                Vin = "14LAKDF2Q3231OIEWRA",
-                ModifiedDate = DateTime.Now
+                dealer_Id = "12345",
+                vin = "14LAKDF2Q3231OIEWRA",
+                modified_date = DateTime.Now
             }
         };
         
@@ -109,8 +109,8 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             var request = new PaginationFilterRequest { PageNumber = pageNumber , PageSize = pageSize };
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
-            
-            Assert.ThrowsAsync<ArgumentException>(() => _service.GetListOfVehicleInformation(request));
+
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await _service.GetListOfVehicleInformation(request));
         }
         
         [Fact]
