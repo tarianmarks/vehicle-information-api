@@ -5,6 +5,9 @@ using VehicleInformationAPI.BusinessLayer.Interfaces;
 using VehicleInformationAPI.DataLayer.Interfaces;
 using dataLayer = VehicleInformationAPI.DataLayer.Models;
 using VehicleInformationAPI.Models;
+using CsvHelper;
+using VehicleInformationAPI.DataLayer.Repositories;
+using Azure.Core;
 
 namespace VehicleInformationAPI.UnitTests.Controllers
 {
@@ -143,6 +146,18 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             //Assert
             Assert.NotNull(result);
             Assert.Equal(result[0].DealerId, request.DealerId);
+        }
+
+        [Fact]
+        public async Task PopulateVehicleInformation_Should_Create_Vehicle_Records()
+        {
+            _mockCsvReader.Setup(x => x.ReadFile(It.IsAny<string>()));
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<dataLayer.VehicleInformation>>())).Returns(_mockVehicles);
+            _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
+
+            var result = await _service.PopulateVehicleInformation("C:\\Temp\temp.csv");
+
+            Assert.True(result);
         }
     }
 }

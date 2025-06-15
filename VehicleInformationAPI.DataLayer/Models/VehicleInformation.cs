@@ -19,4 +19,11 @@ namespace VehicleInformationAPI.DataLayer.Models
         [Column("year")]
         public string? year { get; set; }
     }
+    public class VehicleInformationExtended : VehicleInformation
+    {
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public string ModelYear { get; set; }
+        public string Trim { get; set; }
+    }
 }

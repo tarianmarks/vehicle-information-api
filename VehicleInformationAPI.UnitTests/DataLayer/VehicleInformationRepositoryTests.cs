@@ -48,6 +48,29 @@ namespace VehicleInformationAPI.UnitTests.DataLayer
             }
         };
 
+        private List<VehicleInformationExtended> _mockRepositoryExtendedVehicles = new List<VehicleInformationExtended>(){
+            new VehicleInformationExtended()
+            {
+                id = 1,
+                dealer_Id = "12345",
+                vin = "14LAKDF2Q3231",
+                modified_date = DateTime.Now,
+                make = "Chevy",
+                model = "Tahoe",
+                year = "2020/08/11"
+            },
+            new VehicleInformationExtended()
+            {
+                id = 2,
+                dealer_Id = "12345",
+                vin = "14LAKDF2Q3231OIEWRA",
+                modified_date = DateTime.Now,
+                make = "GMC",
+                model = "Yukon",
+                year = "2020/08/11"
+            }
+        };
+
         public VehicleInformationRepositoryTests()
         {
             _mockLogger = new Mock<ILogger<VehicleInformationRepository>>();
@@ -91,6 +114,14 @@ namespace VehicleInformationAPI.UnitTests.DataLayer
         public async Task StoreVehicleInformation_Should_Add_Vehicles()
         {
             var result = await _repository.StoreVehicleInformation(_mockRepositoryVehicles);
+
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public async Task StoreExtendedVehicleInformation_Should_Add_Vehicles()
+        {
+            var result = await _repository.StoreExtendedVehicleInformation(_mockRepositoryExtendedVehicles);
 
             Assert.True(result);
         }
