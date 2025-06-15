@@ -12,7 +12,7 @@ namespace VehicleInformationAPI.DataLayer
     public class DataContext : DbContext
     {
         protected readonly IConfiguration _configuration;
-        public DataContext(IConfiguration configuration, DbContextOptions<DataContext> options) : base(options)
+        public DataContext(IConfiguration configuration, DbContextOptions options) : base(options)
         {
             _configuration = configuration;
         }

@@ -3,6 +3,7 @@ using Moq;
 using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
 using VehicleInformationAPI.DataLayer.Interfaces;
+using dataLayer = VehicleInformationAPI.DataLayer.Models;
 using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.UnitTests.Controllers
@@ -23,22 +24,22 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             ModifiedDate = DateTime.Now
         };
         
-        private DataLayer.Models.VehicleInformation _mockRepositoryVehicleInformation = 
-            new DataLayer.Models.VehicleInformation()
+        private dataLayer.VehicleInformation _mockRepositoryVehicleInformation = 
+            new dataLayer.VehicleInformation()
             {
                 dealer_Id = "12345",
                 vin = "14LAKDF2Q3231",
                 modified_date = DateTime.Now
             };
         
-        private List<DataLayer.Models.VehicleInformation> _mockRepositoryVehicles = new List<DataLayer.Models.VehicleInformation>(){
-            new DataLayer.Models.VehicleInformation()
+        private List<dataLayer.VehicleInformation> _mockRepositoryVehicles = new List<dataLayer.VehicleInformation>(){
+            new dataLayer.VehicleInformation()
             {
                 dealer_Id = "12345",
                 vin = "14LAKDF2Q3231",
                 modified_date = DateTime.Now
             },
-            new DataLayer.Models.VehicleInformation()
+            new dataLayer.VehicleInformation()
             {
                 dealer_Id = "12345",
                 vin = "14LAKDF2Q3231OIEWRA",
@@ -46,14 +47,14 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             }
         };
         
-        private List<Models.VehicleInformation> _mockVehicles = new List<Models.VehicleInformation>(){
-            new Models.VehicleInformation()
+        private List<VehicleInformation> _mockVehicles = new List<VehicleInformation>(){
+            new VehicleInformation()
             {
                 DealerId = "12345",
                 Vin = "14LAKDF2Q3231",
                 ModifiedDate = DateTime.Now
             },
-            new Models.VehicleInformation()
+            new VehicleInformation()
             {
                 DealerId = "12345",
                 Vin = "14LAKDF2Q3231OIEWRA",
@@ -74,7 +75,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         [Fact]
         public async Task GetVehicleInformationByVinTest_Should_Return_Results()
         {
-            _mockMyMapper.Setup(x => x.MapVehicle(It.IsAny<DataLayer.Models.VehicleInformation>())).Returns(_mockVehicleInformation);
+            _mockMyMapper.Setup(x => x.MapVehicle(It.IsAny<dataLayer.VehicleInformation>())).Returns(_mockVehicleInformation);
             _mockRepository.Setup(repo => repo.GetVehicleInformationByVin(It.IsAny<string>())).Returns(Task.FromResult(_mockRepositoryVehicleInformation));
 
             //Act
@@ -89,7 +90,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetListOfVehicleInformation_Should_Paginate()
         {
             var request = new PaginationFilterRequest { PageNumber = 1 , PageSize = 5 };
-            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<dataLayer.VehicleInformation>>())).Returns(_mockVehicles);
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
@@ -117,7 +118,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetListOfVehicleInformation_Should_FilterByModifiedDate()
         {
             var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, ModifiedDate = DateTime.Parse("10/22/2022 2:30:15 PM") };
-            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<dataLayer.VehicleInformation>>())).Returns(_mockVehicles);
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
@@ -132,7 +133,7 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         public async Task GetListOfVehicleInformation_Should_FilterByDealerId()
         {
             var request = new PaginationFilterRequest { PageNumber = 0, PageSize = 0, DealerId = "12345" };
-            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<DataLayer.Models.VehicleInformation>>())).Returns(_mockVehicles);
+            _mockMyMapper.Setup(x => x.MapVehicles(It.IsAny<List<dataLayer.VehicleInformation>>())).Returns(_mockVehicles);
 
             _mockRepository.Setup(repo => repo.GetAllVehicles()).Returns(Task.FromResult(_mockRepositoryVehicles));
 
