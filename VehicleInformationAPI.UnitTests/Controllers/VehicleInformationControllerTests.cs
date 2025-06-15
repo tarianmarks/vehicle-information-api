@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using VehicleInformationAPI.BusinessLayer;
 using VehicleInformationAPI.BusinessLayer.Interfaces;
 using VehicleInformationAPI.Controllers;
 using VehicleInformationAPI.Models;
@@ -51,6 +50,18 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             //Assert
             Assert.NotNull(result);
             Assert.Equal(400, resultType!.StatusCode);
+        }
+
+        [Fact]
+        public async Task PopulateVehicleInformation_Should_Return_True()
+        {
+            _mockBL.Setup(bl => bl.PopulateVehicleInformation(It.IsAny<string>())).Returns(Task.FromResult(true));
+
+            //Act
+            var result = await _controller.PopulateVehicleInformation("C:\\Temp\\temp.csv");
+
+            //Assert
+            Assert.True(result);
         }
     }
 }

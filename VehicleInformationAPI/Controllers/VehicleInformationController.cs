@@ -44,7 +44,7 @@ namespace VehicleInformationAPI.Controllers
         [HttpPost("")]
         public async Task<IActionResult> GetListOfVehicleInformation(PaginationFilterRequest request)
         {
-            var result = await _vehicleInformationService.GetListOfVehicleInformation(request);
+            var result = await _vehicleInformationService!.GetListOfVehicleInformation(request);
             return Ok(result);
         }
 
@@ -57,7 +57,7 @@ namespace VehicleInformationAPI.Controllers
         [HttpGet("nhtsa/batch/vin/")]
         public async Task<IActionResult> GetExtendedVehicleInformation()
         {
-            var vehicles = await _vehicleInformationService.GetExtendedVehicleInformation();
+            var vehicles = await _vehicleInformationService!.GetExtendedVehicleInformation();
 
             return Ok(vehicles);
         }
@@ -69,11 +69,9 @@ namespace VehicleInformationAPI.Controllers
         /// <param name="csvFile"></param>
         /// <returns>IActionResult status</returns>
         [HttpPost("population/{csvFile}")]
-        public async Task<IActionResult> PopulateVehicleInformation(string csvFile)
+        public async Task<bool> PopulateVehicleInformation(string csvFile)
         {
-            var completed = await _vehicleInformationService.PopulateVehicleInformation(csvFile);
-
-            return Ok();
+            return await _vehicleInformationService!.PopulateVehicleInformation(csvFile);
         }
     }
 }

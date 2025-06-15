@@ -152,18 +152,32 @@ namespace VehicleInformationAPI.BusinessLayer
                 var vehicleInformation = _csvReader.ReadFile(csvFile);
 
                 //query the database for the records
-
+                var vehicles = await _vehicleInformationRepository.GetAllVehicles();
                 //pull vehicle information from the nhtsa api
-                var vehicleInformationExtended = await this.GetExtendedVehicleInformation();
+                var vehicleInformationExtended = await GetExtendedVehicleInformation();
 
                 //store combined information in the database
+                foreach (var vehicle in vehicles)
+                {
+                    if (vehicleInformationExtended!.Count > 0)
+                    {
+                        foreach (var vex in vehicleInformationExtended)
+                        {
+                            if (vex.Vin == vehicle.vin)
+                            {
+                                vex.ModifiedDate = vehicle.modified_date;
+                                vex.DealerId = vehicle.dealer_Id!;
+                            }
+                        }
+                    }
+                }
 
-                return true;
+                return await _vehicleInformationRepository.StoreExtendedVehicleInformation(_myMapper.MapExtendedVehiclesToDb(vehicleInformationExtended));
             }
 
             catch (Exception err)
             {
-                throw new Exception($"Unable to get and store vehicle information into the data store {err}");
+                throw new Exception($"Unable to get and store extended vehicle information into the data store {err}");
             }
         }
     }

@@ -8,5 +8,6 @@ namespace VehicleInformationAPI.DataLayer.Interfaces
         public Task<VehicleInformation> GetVehicleInformationByVin(string vin);
 
         public Task<bool> StoreVehicleInformation(List<VehicleInformation> vehicleInformation);
+        public Task<bool> StoreExtendedVehicleInformation(List<VehicleInformationExtended> vehicleInformationExtended);
     }
 }
