@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace VehicleInformationAPI.DataLayer.Repositories
 {
-    public class VehicleInformationRepository(DataContext dataContext, IConfiguration configuration) : IVehicleInformationRepository
+    public class VehicleInformationRepository(DataContext dataContext, IConfiguration configuration, ILogger<VehicleInformationRepository> logger) : IVehicleInformationRepository
     {
         private DataContext _dataContext = dataContext;
         private IConfiguration _configuration = configuration;
+        private ILogger _logger = logger;
 
         public async Task<VehicleInformation> GetVehicleInformationByVin(string vin)
         {
@@ -29,78 +30,6 @@ namespace VehicleInformationAPI.DataLayer.Repositories
             using (var context = _dataContext)
             {
                 return await _dataContext.VehicleInformations.ToListAsync();
-            //    return new List<VehicleInformation>()
-            //    {
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "12345",
-            //        Vin = "14LAKDF2Q3231",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "12345",
-            //        Vin = "1G1ZT53826F109149",
-            //        ModifiedDate = DateTime.Parse("2022-11-23")
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "12345",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "222341",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "22243",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "98765",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "98765",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "556678",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "6789",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    },
-
-            //    new VehicleInformation()
-            //    {
-            //        DealerId = "6789",
-            //        Vin = "14LAKDF2Q3231ERMEW325A",
-            //        ModifiedDate = DateTime.Now
-            //    }
-            //};
             }
         }
 

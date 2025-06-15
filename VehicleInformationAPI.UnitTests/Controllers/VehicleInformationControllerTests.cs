@@ -8,7 +8,7 @@ using VehicleInformationAPI.Models;
 
 namespace VehicleInformationAPI.UnitTests.Controllers
 {
-    public class VehicleInformationControllerTest
+    public class VehicleInformationControllerTests
     {
         private Mock<ILogger<VehicleInformationController>> _mockLogger;
         private Mock<IVehicleInformationService> _mockBL;
@@ -21,14 +21,14 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             ModifiedDate = DateTime.Now
         };
     
-        public VehicleInformationControllerTest() {
+        public VehicleInformationControllerTests() {
             _mockLogger = new Mock<ILogger<VehicleInformationController>>();
             _mockBL = new Mock<IVehicleInformationService>();
             _controller = new VehicleInformationController(_mockBL.Object, _mockLogger.Object);
         }
 
         [Fact]
-        public async Task GetGetVehicleInformationByVINTest_Should_Return_200()
+        public async Task GetVehicleInformationByVIN_Should_Return_200()
         {
             _mockBL.Setup(bl => bl.GetVehicleInformationByVin(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformation));
 
