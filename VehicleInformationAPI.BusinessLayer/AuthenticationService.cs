@@ -11,7 +11,7 @@ namespace VehicleInformationAPI.BusinessLayer
 
         public async Task<string> GetAuthentication(string clientSec)
         {
-            string url = @"https://login.microsoftonline.com/c4779dd6-d94f-4813-a8f9-a570fa0d8706/oauth2/v2.0/token";
+            string url = $"https://login.microsoftonline.com/c4779dd6-d94f-4813-a8f9-a570fa0d8706/oauth2/v2.0/token";
 
             var formValues = new FormUrlEncodedContent(new Dictionary<string, string>
             {

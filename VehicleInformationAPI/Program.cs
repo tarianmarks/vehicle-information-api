@@ -82,8 +82,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuers = builder.Configuration.GetSection("Api:ValidIssuers").Get<string[]>(),
-            ValidAudiences = builder.Configuration.GetSection("Api:ValidAudiences").Get<string[]>(),
+            ValidIssuers = new[]
+            {
+      "https://login.microsoftonline.com/c4779dd6-d94f-4813-a8f9-a570fa0d8706/oauth2/v2.0"
+            },
+            ValidAudiences = builder.Configuration.GetSection("AzureAd:ValidAudiences").Get<string[]>(),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(new char[10]))
         };
     });
