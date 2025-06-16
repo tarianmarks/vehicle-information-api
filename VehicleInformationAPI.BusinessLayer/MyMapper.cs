@@ -54,23 +54,5 @@ namespace VehicleInformationAPI.BusinessLayer
             }
             return mappedVehicles;
         }
-        public List<DataLayer.Models.VehicleInformationExtended> MapExtendedVehiclesToDb(List<Models.VehicleInformationExtended> vehicles)
-        {
-            var mappedVehicles = new List<DataLayer.Models.VehicleInformationExtended>();
-
-            foreach (var vehicle in vehicles)
-            {
-                mappedVehicles.Add(new DataLayer.Models.VehicleInformationExtended()
-                {
-                    dealer_Id = vehicle.DealerId,
-                    vin = vehicle.Vin!,
-                    modified_date = vehicle.ModifiedDate,
-                    make = vehicle.Make,
-                    model = vehicle.Model,
-                    year = vehicle.ModelYear,
-                });
-            }
-            return mappedVehicles;
-        }
     }
 }

@@ -7,6 +7,6 @@ namespace VehicleInformationAPI.BusinessLayer.Interfaces
         public Task<VehicleInformation> GetVehicleInformationByVin(string vin);
         public Task<List<VehicleInformation>> GetListOfVehicleInformation(PaginationFilterRequest request);
         public Task<List<VehicleInformationExtended>> GetExtendedVehicleInformation();
-        public Task<bool> PopulateVehicleInformation(string csvFile);
+        public Task<List<VehicleInformationExtended>> PopulateVehicleInformation(string csvFile);
     }
 }

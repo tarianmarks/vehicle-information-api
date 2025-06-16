@@ -144,7 +144,7 @@ namespace VehicleInformationAPI.BusinessLayer
             }
         }
 
-        public async Task<bool> PopulateVehicleInformation(string csvFile)
+        public async Task<List<VehicleInformationExtended>> PopulateVehicleInformation(string csvFile)
         {
             try
             {
@@ -156,7 +156,8 @@ namespace VehicleInformationAPI.BusinessLayer
                 //pull vehicle information from the nhtsa api
                 var vehicleInformationExtended = await GetExtendedVehicleInformation();
 
-                //store combined information in the database
+                //return vehicle information from db, augmented with nhtsa info
+    
                 foreach (var vehicle in vehicles)
                 {
                     if (vehicleInformationExtended!.Count > 0)
@@ -171,13 +172,12 @@ namespace VehicleInformationAPI.BusinessLayer
                         }
                     }
                 }
-
-                return await _vehicleInformationRepository.StoreExtendedVehicleInformation(_myMapper.MapExtendedVehiclesToDb(vehicleInformationExtended));
+                return vehicleInformationExtended;
             }
 
             catch (Exception err)
             {
-                throw new Exception($"Unable to get and store extended vehicle information into the data store {err}");
+                throw new Exception($"Unable to augment vehicle information. {err}");
             }
         }
     }
