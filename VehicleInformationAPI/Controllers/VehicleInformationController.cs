@@ -27,13 +27,11 @@ namespace VehicleInformationAPI.Controllers
         {
             if (string.IsNullOrWhiteSpace(vin))
             {
-                //throw new ArgumentNullException(nameof(vin));
                 return BadRequest();
             }
             var result = await _vehicleInformationService!.GetVehicleInformationByVin(vin);
 
             return Ok(result);
-            //return await _vehicleInformation.GetVehicleInformationByVIN(vin);
         }
 
         /// <summary>
@@ -69,9 +67,11 @@ namespace VehicleInformationAPI.Controllers
         /// <param name="csvFile"></param>
         /// <returns>IActionResult status</returns>
         [HttpPost("population/{csvFile}")]
-        public async Task<bool> PopulateVehicleInformation(string csvFile)
+        public async Task<IActionResult> PopulateVehicleInformation(string csvFile)
         {
-            return await _vehicleInformationService!.PopulateVehicleInformation(csvFile);
+            var result = await _vehicleInformationService!.PopulateVehicleInformation(csvFile);
+
+            return Ok(result);
         }
     }
 }

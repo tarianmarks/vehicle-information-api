@@ -14,7 +14,6 @@ namespace VehicleInformationAPI.DataLayer
         }
 
         public DbSet<VehicleInformation> VehicleInformations { get; set; }
-        public DbSet<VehicleInformationExtended> VehicleInformationsExtended { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

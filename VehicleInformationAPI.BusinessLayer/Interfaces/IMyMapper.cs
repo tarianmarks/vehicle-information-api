@@ -8,6 +8,5 @@
         Models.VehicleInformation MapVehicle(DataLayer.Models.VehicleInformation vehicle);
         List<Models.VehicleInformation> MapVehicles(List<DataLayer.Models.VehicleInformation> vehicles);
         List<DataLayer.Models.VehicleInformation> MapVehiclesToDb(List<Models.VehicleInformation> vehicles);
-        public List<DataLayer.Models.VehicleInformationExtended> MapExtendedVehiclesToDb(List<Models.VehicleInformationExtended> vehicles);
     }
 }

@@ -47,20 +47,5 @@ namespace VehicleInformationAPI.DataLayer.Repositories
                 return true;
             }
         }
-
-        public async Task<bool> StoreExtendedVehicleInformation(List<VehicleInformationExtended> vehicleInformationExtended)
-        {
-            using (var context = _dataContext)
-            {
-                foreach (var v in vehicleInformationExtended)
-                {
-                    _dataContext.VehicleInformationsExtended.Add(v!);
-                }
-
-                await _dataContext.SaveChangesAsync();
-
-                return true;
-            }
-        }
     }
 }

@@ -19,6 +19,27 @@ namespace VehicleInformationAPI.UnitTests.Controllers
             Vin = "14LAKDF2Q3231",
             ModifiedDate = DateTime.Now
         };
+        
+        private List<VehicleInformationExtended> _mockVehicleInformationExtendedList = new List<VehicleInformationExtended>() {
+            new VehicleInformationExtended()
+            {
+                DealerId = "12345",
+                Vin = "14LAKDF2Q3231",
+                ModifiedDate = DateTime.Now,
+                Model = "Chevy",
+                Make = "Tahoe",
+                Trim = "LT"
+            },
+            new VehicleInformationExtended()
+            {
+                DealerId = "12345",
+                Vin = "1G1ZT53826F109149",
+                ModifiedDate = DateTime.Now,
+                Model = "GMC",
+                Make = "Yukon",
+                Trim = "Denali"
+            }
+        };
     
         public VehicleInformationControllerTests() {
             _mockLogger = new Mock<ILogger<VehicleInformationController>>();
@@ -53,15 +74,17 @@ namespace VehicleInformationAPI.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task PopulateVehicleInformation_Should_Return_True()
+        public async Task PopulateVehicleInformation_Should_Return_Vehicles()
         {
-            _mockBL.Setup(bl => bl.PopulateVehicleInformation(It.IsAny<string>())).Returns(Task.FromResult(true));
+            _mockBL.Setup(bl => bl.PopulateVehicleInformation(It.IsAny<string>())).Returns(Task.FromResult(_mockVehicleInformationExtendedList));
 
             //Act
             var result = await _controller.PopulateVehicleInformation("C:\\Temp\\temp.csv");
+            var resultType = result as OkObjectResult;
 
             //Assert
-            Assert.True(result);
+            Assert.NotNull(result);
+            Assert.Equal(200, resultType!.StatusCode);
         }
     }
 }
